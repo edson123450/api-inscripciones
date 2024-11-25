@@ -27,3 +27,53 @@ functions:
                   },
                   "body": $input.json('$')
                 }
+  crear:
+    handler: CrearInscripcionEstudiante.lambda_handler
+    events:
+      - http:
+          path: /inscripciones/crear
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
+
+resources:
+  Resources:
+    TablaInscripciones:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: tabla_inscripciones
+        AttributeDefinitions:
+          - AttributeName: tenant_id#c_estudiante
+            AttributeType: S
+          - AttributeName: c_programa
+            AttributeType: S
+          - AttributeName: tenant_id#c_programa
+            AttributeType: S
+          - AttributeName: c_estudiante
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id#c_estudiante
+            KeyType: HASH
+          - AttributeName: c_programa
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: tenantprograma-estudiante
+            KeySchema:
+              - AttributeName: tenant_id#c_programa
+                KeyType: HASH
+              - AttributeName: c_estudiante
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
