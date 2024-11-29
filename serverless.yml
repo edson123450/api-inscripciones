@@ -46,6 +46,44 @@ functions:
                   },
                   "body": $input.json('$')
                 }
+  specificsearch:
+    handler: BuscarInscripcionEspecifica.lambda_handler
+    events:
+      - http:
+          path: /inscripciones/specificsearch
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
+  changestate:
+    handler: CambiarEstadoInscripcionEstudiante.lambda_handler
+    events:
+      - http:
+          path: /inscripciones/changestate
+          method: put
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
 resources:
   Resources:
