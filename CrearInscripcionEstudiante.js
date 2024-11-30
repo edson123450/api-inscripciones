@@ -3,8 +3,9 @@ const AWS = require('aws-sdk');
 
 // Configurar el cliente de DynamoDB
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+const lambdaClient = new AWS.Lambda();
 
-exports.handler = async (event) => {
+exports.lambda_handler = async (event) => {
     try {
         // Obtener el token del encabezado
         const token = event.headers?.Authorization;
@@ -56,8 +57,8 @@ exports.handler = async (event) => {
 
 
         // Validar que el body contiene los campos necesarios
-        const body = JSON.parse(event.body);
-        const { "tenant_id#c_estudiante": tenantIdEstudiante, c_programa, datos_inscripcion } = body;
+        //const body = JSON.parse(event.body);
+        const { "tenant_id#c_estudiante": tenantIdEstudiante, c_programa, datos_inscripcion } = event.body;
 
         if (!tenantIdEstudiante || !c_programa || !datos_inscripcion) {
             return {
