@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   iam:
-    role: arn:aws:iam::051476014162:role/LabRole
+    role: arn:aws:iam::547527107767:role/LabRole
 
 functions:
   search:
@@ -115,3 +115,5 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
